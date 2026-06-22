@@ -21,7 +21,7 @@ Yin Li<sup>1</sup>
 
 Multimodal large language models (MLLMs) achieve impressive performance on visual reasoning with RGB imagery, yet remain fragile under common degradations such as fog, blur, and low-light conditions. Infrared (IR) imaging is a long-established complement to RGB and offers inherent robustness in these settings, but its integration into MLLMs is underexplored.
 
-**DualVision** is a lightweight fusion module that efficiently incorporates IR–RGB information into MLLMs via patch-level **multi-scale localized cross-attention**. Each RGB patch token attends only to spatially corresponding IR regions, injecting complementary IR cues where they are most relevant — with low compute overhead and broad compatibility with existing MLLMs.
+**DualVision** is a lightweight fusion module that efficiently incorporates IR–RGB information into MLLMs via patch-level **multi-scale localized cross-attention**. Each RGB patch token attends only to spatially corresponding IR regions, injecting complementary IR cues where they are most relevant, with low compute overhead and broad compatibility with existing MLLMs.
 
 <p align="center">
   <img src="https://abrarmajeedi.github.io/dualvision/img/highlevel_cropped.png" width="80%">
@@ -29,11 +29,11 @@ Multimodal large language models (MLLMs) achieve impressive performance on visua
 
 ## Key Contributions
 
-- **DualVision fusion module** — a lightweight IR–RGB fusion design built on multi-scale 2D local cross-attention, drop-in compatible with existing MLLMs.
-- **DV-204K** — a dataset of ~25K aligned IR–RGB image pairs with ~204K modality-aware QA annotations for instruction tuning.
-- **DV-500** — a curated benchmark of 500 IR–RGB image pairs with 500 QA pairs for evaluating cross-modal reasoning under degradations.
+- **DualVision fusion module**: a lightweight IR–RGB fusion design built on multi-scale 2D local cross-attention, drop-in compatible with existing MLLMs.
+- **DV-204K**: a dataset of ~25K aligned IR–RGB image pairs with ~204K modality-aware QA annotations for instruction tuning.
+- **DV-500**: a curated benchmark of 500 IR–RGB image pairs with 500 QA pairs for evaluating cross-modal reasoning under degradations.
 - **~75% compute savings** vs. naïve concatenation: RGB-IR concatenation costs O(4N²); DualVision fuses to N tokens at O(N²).
-- **Strong empirical results** under blur, low-light, and fog — outperforming open- and closed-source MLLMs (LLaVA 1.5, Qwen2-VL, LLaVA-Next Interleave, LLaMA-4 Scout, Claude Sonnet 3.5v2, Claude Opus 4) across clean and degraded settings.
+- **Strong empirical results** under blur, low-light, and fog, outperforming open- and closed-source MLLMs (LLaVA 1.5, Qwen2-VL, LLaVA-Next Interleave, LLaMA-4 Scout, Claude Sonnet 3.5v2, Claude Opus 4) across clean and degraded settings.
 
 ## Method
 
@@ -41,9 +41,9 @@ Multimodal large language models (MLLMs) achieve impressive performance on visua
   <img src="https://abrarmajeedi.github.io/dualvision/img/main_fig.png" width="100%">
 </p>
 
-- **2D Local Cross-Attention** — each RGB token attends to IR tokens within a radius-r region centered at its location, enforcing spatially aligned fusion.
-- **Multi-Scale Design** — multiple local cross-attention blocks applied sequentially with progressively larger radii, capturing multi-scale interactions while preserving locality.
-- **Computational Efficiency** — fuses both modalities into N tokens (4× fewer than concatenation), reducing attention cost by ~75%.
+- **2D Local Cross-Attention**: each RGB token attends to IR tokens within a radius-r region centered at its location, enforcing spatially aligned fusion.
+- **Multi-Scale Design**: multiple local cross-attention blocks applied sequentially with progressively larger radii, capturing multi-scale interactions while preserving locality.
+- **Computational Efficiency**: fuses both modalities into N tokens (4× fewer than concatenation), reducing attention cost by ~75%.
 
 ## Repository structure
 
@@ -55,7 +55,7 @@ DualVision/
 │   ├── requirements.txt
 │   └── pyproject.toml
 └── data/                 # DualVision QA annotations (images downloaded separately)
-    └── v1/               # DV-204K — the dataset used in the paper
+    └── v1/               # DV-204K: the dataset used in the paper
         ├── train.json    # DV-204K instruction-tuning conversations
         └── dv500.jsonl   # DV-500 benchmark
 ```
@@ -79,9 +79,6 @@ The **QA annotations** are released here under `data/v1/`:
 
 Every training sample feeds the model **both modalities** (RGB + IR) regardless of which
 one the question targets.
-
-> **Upcoming:** we are preparing an upgraded, larger annotation set verified with a
-> stronger model (Claude Opus), coming soon.
 
 ### Arranging the images
 
@@ -117,7 +114,7 @@ The fusion module combines the per-modality CLIP features before the LLM:
 
 | strategy      | description |
 |---------------|-------------|
-| `local_xattn` | **DualVision** — RGB queries attend to a local IR window (3 blocks, radii 1/2/3). |
+| `local_xattn` | **DualVision**: RGB queries attend to a local IR window (3 blocks, radii 1/2/3). |
 | `concat`      | concatenate RGB + IR tokens (baseline). |
 
 ## Training
@@ -142,7 +139,7 @@ time, **336×336**, padded to square (no cropping), yielding 577 tokens per moda
 
 ## Evaluation
 
-`scripts/eval.sh` evaluates a trained checkpoint on **DV-500** across 13 conditions — the
+`scripts/eval.sh` evaluates a trained checkpoint on **DV-500** across 13 conditions: the
 clean original plus 12 RGB degradations (IR always clean):
 
 ```
